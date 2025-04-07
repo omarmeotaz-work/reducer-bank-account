@@ -21,6 +21,7 @@ function reducer(state, action) {
         balance: state.balance + action.payload,
       };
     case "withdraw":
+      if (state.balance < action.payload) return state;
       return {
         ...state,
         balance: state.balance - action.payload,
@@ -116,7 +117,7 @@ function App() {
           onClick={() => {
             dispatch({ type: "closeAccount" });
           }}
-          disabled={!isActive || loan !== 0}
+          disabled={!isActive || loan !== 0 || balance !== 0}
         >
           Close account
         </button>
