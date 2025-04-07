@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 
 import "./App.css";
 
@@ -27,6 +27,7 @@ function reducer(state, action) {
         balance: state.balance - action.payload,
       };
     case "requestLoan":
+      if (state.loan !== 0) return state;
       return {
         ...state,
         loan: state.loan + action.payload,
@@ -87,7 +88,7 @@ function App() {
           onClick={() => {
             dispatch({ type: "withdraw", payload: 50 });
           }}
-          disabled={!isActive}
+          disabled={!isActive || balance <= 0}
         >
           Withdraw 50
         </button>
@@ -107,7 +108,7 @@ function App() {
           onClick={() => {
             dispatch({ type: "payLoan" });
           }}
-          disabled={!isActive || balance <= loan}
+          disabled={!isActive || balance < loan}
         >
           Pay loan
         </button>
